@@ -1,3 +1,5 @@
+import math
+
 from tictactoe.board import Player, Board, Move
 
 
@@ -17,16 +19,9 @@ def game_loop():
 
 
 def game():
-    result = '?'
-
-    while result not in ('me', 'ai'):
-        result = input('who plays first? (me/ai)\n> ')
-
-    current = Player.HUMAN if result == 'me' else Player.AI
+    current = Player.AI
 
     board = Board()
-
-    print(board)
 
     winner = Player.UNKNOWN
 
@@ -107,7 +102,7 @@ def toggle_player(player):
     return Player.AI if player == Player.HUMAN else Player.HUMAN
 
 
-def tree_search(board, player, depth=5):
+def tree_search(board, player):
     winner = board.winner
 
     if winner == Player.HUMAN:
@@ -124,7 +119,7 @@ def tree_search(board, player, depth=5):
         return board.winner.value, 1
 
     for move in possible_moves:
-        w, t = tree_search(Board(board, move), toggle_player(player), depth - 1)
+        w, t = tree_search(Board(board, move), toggle_player(player))
 
         wins += w
         total += t
